@@ -1,21 +1,27 @@
 /** A context of all of the book data */
-import React, { createContext, useState, useReducer} from 'react';
+import React, { createContext, useState, useReducer, useEffect} from 'react';
 import uuid from 'uuid/v1'
 import { bookReducer } from '../reducers/bookReducer';
 
 
 export const BookContext = createContext();  /* create bookContext */
 
-
 const BookContextProvider = (props) =>{ /* create Book Context Provider Function to proivde data to compoments */
-    /** intial data */
-    const [books, dispatch] = useReducer(bookReducer, [     
+    /** intial data 
+     * get location storage data if it exists
+    */
+    const [books, dispatch] = useReducer(bookReducer, [], () =>{
+        const localData = localStorage.getItem('books');
+        return localData ? JSON.parse(localData): [];
+    });
 
+    /** 
+     * LocalStorage here
+     * it runs whenver [books] data changes */
+    useEffect(()  =>{
+        localStorage.setItem('books', JSON.stringify(books))
+    },[books])
 
-        // {title: 'name of the Land', author: 'Bjørn', id: 1},
-        // {title: 'name of the Wind', author: 'Jianyou', id: 2},
-        // {title: 'name of the Sea', author: 'Siri', id: 3}
-    ]);
 
     /** 
      * add new book 
