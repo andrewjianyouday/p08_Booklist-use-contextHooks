@@ -1,6 +1,7 @@
 /** A context of all of the book data */
-import React, { createContext, useState} from 'react';
+import React, { createContext, useState, useReducer} from 'react';
 import uuid from 'uuid/v1'
+import { bookReducer } from '../reducers/bookReducer';
 
 
 export const BookContext = createContext();  /* create bookContext */
@@ -8,21 +9,23 @@ export const BookContext = createContext();  /* create bookContext */
 
 const BookContextProvider = (props) =>{ /* create Book Context Provider Function to proivde data to compoments */
     /** intial data */
-    const [books, setBooks] = useState([     
-        {title: 'name of the Land', author: 'Bjørn', id: 1},
-        {title: 'name of the Wind', author: 'Jianyou', id: 2},
-        {title: 'name of the Sea', author: 'Siri', id: 3}
+    const [books, dispatch] = useReducer(bookReducer, [     
+
+
+        // {title: 'name of the Land', author: 'Bjørn', id: 1},
+        // {title: 'name of the Wind', author: 'Jianyou', id: 2},
+        // {title: 'name of the Sea', author: 'Siri', id: 3}
     ]);
 
     /** 
      * add new book 
      */
-    const addBook = (title, author) =>{
-        setBooks([
-            ...books, 
-            {title: title, author: author, id: uuid()}
-        ]);
-    }
+    // const addBook = (title, author) =>{
+    //     setBooks([
+    //         ...books, 
+    //         {title: title, author: author, id: uuid()}
+    //     ]);
+    // }
      /** 
      * remove a book 
      * filter() a callback function 
@@ -30,11 +33,11 @@ const BookContextProvider = (props) =>{ /* create Book Context Provider Function
      * true: id not matches -> keep item in array
      * false: id matches -> remove the item
      */
-    const removeBook = (id) =>{
-        setBooks(books.filter(book => book.id !== id))
-    };
+    // const removeBook = (id) =>{
+    //     setBooks(books.filter(book => book.id !== id))
+    // };
     return (
-        <BookContext.Provider value={{books, addBook, removeBook}}>
+        <BookContext.Provider value={{books, dispatch}}>
             {props.children}
         </BookContext.Provider>
     )
